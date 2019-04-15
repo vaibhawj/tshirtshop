@@ -2,7 +2,6 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, Card, CardContent, CardMedia, Grid } from '@material-ui/core';
 import LeftNav from '../../components/LeftNav';
-import axios from 'axios';
 
 const styles = theme => ({
     content: {
@@ -31,17 +30,8 @@ const styles = theme => ({
 
 class Search extends React.Component {
 
-    constructor() {
-        super();
-        this.state = {
-            products: []
-        }
-    }
-
     componentDidMount() {
-        axios.get('/api/products').then(res => {
-            this.setState({ products: res.data })
-        });
+        this.props.getProducts();
     }
 
     render() {
@@ -52,9 +42,9 @@ class Search extends React.Component {
                 <main className={classes.content} style={{ paddingLeft: 240, paddingTop: 100 }}>
                     <Grid container spacing={16}>
                         {
-                            this.state.products.map(p => {
+                            this.props.products.map(p => {
                                 return (
-                                    <Grid item>
+                                    <Grid item key={p.product_id}>
                                         <Card className={classes.card}>
                                             <CardMedia
                                                 className={classes.media}

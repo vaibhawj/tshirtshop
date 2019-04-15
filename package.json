@@ -17,11 +17,16 @@
     "path": "^0.12.7",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-router-dom": "^4.3.1"
+    "react-redux": "^6.0.0",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "babel-loader": "^7.0.0",
+    "@babel/core": "7.4.3",
+    "@babel/preset-env": "7.4.3",
+    "@babel/cli": "7.4.3",
+    "babel-loader": "8.0.5",
     "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
     "babel-plugin-transform-es3-property-literals": "^6.22.0",
     "babel-preset-es2015": "7.0.0-beta.3",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import SearchPage from './pages/search/Component';
+import SearchPage from './pages/search/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,7 @@ const hoc = (Component) => (props) => {
 const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: "#43536C"
   }
 });
 
@@ -25,9 +26,7 @@ class App extends React.Component {
         <div className="container">
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                TShirtShop
-          </Typography>
+            <img src="images/shop.png"/>
             </Toolbar>
           </AppBar>
           <Switch>
