@@ -13,7 +13,7 @@ const hoc = (Component) => (props) => {
 const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: "#43536C"
+    backgroundColor: "#4D5766"
   }
 });
 

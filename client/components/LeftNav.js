@@ -9,7 +9,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
-import { Typography } from '@material-ui/core'
+import { Typography, TextField } from '@material-ui/core'
 
 const drawerWidth = 240;
 
@@ -19,24 +19,17 @@ const styles = theme => ({
     },
     drawer: {
         width: drawerWidth,
-        flexShrink: 0,
+        flexShrink: 0
     },
     drawerPaper: {
         width: drawerWidth
     },
     toolbar: theme.mixins.toolbar,
-    searchRoot: {
-        padding: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-        width: 400
-    },
     searchInput: {
+        marginTop: 30,
         marginLeft: 8,
-        flex: 1
-    },
-    searchIconButton: {
-        padding: 10
+        marginRight: 8,
+        marginBottom: 20
     },
     filterText: {
         color: 'grey',
@@ -58,13 +51,7 @@ class LeftNav extends React.Component {
             >
                 <div className={classes.toolbar} />
                 <Divider />
-                <Paper className={classes.searchRoot} elevation={1}>
-                    <InputBase className={classes.searchInput} placeholder="Search" />
-                    <IconButton className={classes.searchIconButton} aria-label="Search">
-                        <SearchIcon />
-                    </IconButton>
-                </Paper>
-                <Divider />
+                <TextField className={classes.searchInput} placeholder="Search" />
                 <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
                 <List>
                     {['REGIONAL', 'NATURE', 'SEASONAL'].map((text, index) => (
