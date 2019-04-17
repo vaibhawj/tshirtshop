@@ -4,7 +4,9 @@ import axios from 'axios';
 
 const mapStateToProps = state => {
     return {
-        products: state.searchPage.products
+        products: state.searchPage.products,
+        departments: state.searchPage.departments,
+        categories: state.searchPage.categories
     }
 }
 

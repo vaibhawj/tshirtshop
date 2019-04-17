@@ -5,13 +5,9 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Drawer from '@material-ui/core/Drawer';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import Paper from '@material-ui/core/Paper';
 import { Typography, TextField } from '@material-ui/core'
 
-const drawerWidth = 240;
+const drawerWidth = 270;
 
 const styles = theme => ({
     root: {
@@ -54,20 +50,24 @@ class LeftNav extends React.Component {
                 <TextField className={classes.searchInput} placeholder="Search" />
                 <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
                 <List>
-                    {['REGIONAL', 'NATURE', 'SEASONAL'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    {
+                        this.props.departments.map(d => (
+                            <ListItem button key={d.id}>
+                                <ListItemText primary={d.name} />
+                            </ListItem>
+                        ))
+                    }
                 </List>
                 <Divider />
                 <Typography variant="h6" noWrap className={classes.filterText}>Category</Typography>
                 <List>
-                    {['ANIMAL', 'FLOWER'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    {
+                        this.props.categories.map(c => (
+                            <ListItem button key={c.id}>
+                                <ListItemText primary={c.name} />
+                            </ListItem>
+                        ))
+                    }
                 </List>
             </Drawer>
         )

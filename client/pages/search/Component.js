@@ -8,15 +8,15 @@ const styles = theme => ({
         flexGrow: 1
     },
     media: {
-        width: 250,
-        height: 250,
+        width: 300,
+        height: 300,
         marginTop: 20,
         marginLeft: 10,
         marginRight: 10,
         backgroundPosition: 'inherit'
     },
     card: {
-        width: 270
+
     },
     discountedPrice: {
         color: "deeppink"
@@ -38,13 +38,13 @@ class Search extends React.Component {
         const { classes } = this.props;
         return (
             <div>
-                <LeftNav />
-                <main className={classes.content} style={{ paddingLeft: 240, paddingTop: 100 }}>
+                <LeftNav departments={this.props.departments} categories={this.props.categories} />
+                <main className={classes.content} style={{ paddingLeft: 300, paddingTop: 100 }}>
                     <Grid container spacing={16}>
                         {
                             this.props.products.map(p => {
                                 return (
-                                    <Grid item key={p.product_id}>
+                                    <Grid item key={p.productId}>
                                         <Card className={classes.card}>
                                             <CardMedia
                                                 className={classes.media}
@@ -56,7 +56,7 @@ class Search extends React.Component {
                                                     <b>{p.name}</b>
                                                 </Typography>
                                                 <Typography gutterBottom align="center" className={classes.discountedPrice} variant="h6">
-                                                    <b>${p.discounted_price}</b>
+                                                    <b>${p.discountedPrice}</b>
                                                 </Typography>
                                                 <Typography gutterBottom align="center" className={classes.originalPrice}>
                                                     ${p.price}
