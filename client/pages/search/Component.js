@@ -20,7 +20,7 @@ const styles = theme => ({
     card: {
 
     },
-    discountedPrice: {
+    sellingPrice: {
         color: "deeppink"
     },
     originalPrice: {
@@ -66,11 +66,11 @@ class Search extends React.Component {
                                                 <Typography color="textSecondary" gutterBottom align="center">
                                                     <b>{p.name}</b>
                                                 </Typography>
-                                                <Typography gutterBottom align="center" className={classes.discountedPrice} variant="h6">
-                                                    <b>${p.discountedPrice}</b>
+                                                <Typography gutterBottom align="center" className={classes.sellingPrice} variant="h6">
+                                                    <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>
                                                 </Typography>
                                                 <Typography gutterBottom align="center" className={classes.originalPrice}>
-                                                    ${p.price}
+                                                    {p.discountedPrice == 0 ? null : `$${p.price}` }
                                                 </Typography>
                                             </CardContent>
                                         </Card>
