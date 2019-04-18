@@ -38,7 +38,10 @@ class Search extends React.Component {
         const { classes } = this.props;
         return (
             <div>
-                <LeftNav departments={this.props.departments} categories={this.props.categories} />
+                <LeftNav departments={this.props.departments}
+                    categories={this.props.categories}
+                    searchDepartment={this.props.searchDepartment}
+                    searchCategory={this.props.searchCategory} />
                 <main className={classes.content} style={{ paddingLeft: 300, paddingTop: 100 }}>
                     <Grid container spacing={16}>
                         {

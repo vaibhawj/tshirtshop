@@ -52,7 +52,11 @@ class LeftNav extends React.Component {
                 <List>
                     {
                         this.props.departments.map(d => (
-                            <ListItem button key={d.id}>
+                            <ListItem button key={d.id} onClick={e => {
+                                e.preventDefault();
+                                this.props.searchDepartment(d.id)
+                            }
+                            }>
                                 <ListItemText primary={d.name} />
                             </ListItem>
                         ))
@@ -63,7 +67,11 @@ class LeftNav extends React.Component {
                 <List>
                     {
                         this.props.categories.map(c => (
-                            <ListItem button key={c.id}>
+                            <ListItem button key={c.id} onClick={e => {
+                                e.preventDefault();
+                                this.props.searchCategory(c.id)
+                            }
+                            }>
                                 <ListItemText primary={c.name} />
                             </ListItem>
                         ))

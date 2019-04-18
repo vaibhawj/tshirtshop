@@ -4,7 +4,7 @@ const { getProducts } = require('../db/products');
 const router = new Router({ prefix: "/api" });
 
 router.get('/products', async (ctx, next) => {
-    ctx.body = await getProducts();
+    ctx.body = await getProducts(ctx.request.query.departmentId, ctx.request.query.categoryId);
 });
 
 router.all('*', (ctx, next) => {

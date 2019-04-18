@@ -8,6 +8,15 @@ export default (state = { products: [], departments: [], categories: [] }, actio
             departments: action.payload.departments,
             categories: action.payload.categories
         }
+        case "SET_DEPT": return {
+            ...state,
+            selectedDepartment: action.payload
+        }
+        case "SET_CAT": return {
+            ...state,
+            selectedCategory: action.payload
+        }
+
     }
     return state;
 }

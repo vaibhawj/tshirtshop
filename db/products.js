@@ -1,11 +1,26 @@
 const pool = require('./connectionUtil');
 
-async function getProducts() {
+async function getProducts(departmentId, categoryId) {
     return new Promise((resolve, reject) => {
-        pool.query(`select p.*, d.department_id, d.name as department_name, c.category_id, c.name as category_name from product p 
+        var sql = `select p.*, d.department_id, d.name as department_name, c.category_id, c.name as category_name from product p 
         left outer join product_category pc on p.product_id = pc.product_id 
         left outer join category c on c.category_id = pc.category_id
-        left outer join department d on c.department_id = d.department_id;`, function (error, results, fields) {
+        left outer join department d on c.department_id = d.department_id `;
+
+        if (departmentId || categoryId) {
+            sql = sql + "where "
+            if (departmentId) {
+                sql = sql + `d.department_id=${departmentId} `
+            }
+            if (categoryId) {
+                if(departmentId) {
+                    sql = sql + "and "
+                }
+                sql = sql + `c.category_id=${categoryId}`
+            }
+        }
+        sql = sql + ";"
+        pool.query(sql, function (error, results, fields) {
                 if (error) throw error;
                 resolve(processProducts(results));
             });

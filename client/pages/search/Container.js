@@ -12,14 +12,39 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getProducts: () => dispatch(getProducts())
+        getProducts: () => dispatch(getProducts()),
+        searchDepartment: id => {
+            dispatch({ type: "SET_DEPT", payload: id });
+            dispatch(getProducts());
+        },
+        searchCategory: id => {
+            dispatch({ type: "SET_CAT", payload: id });
+            dispatch(getProducts());
+        }
     }
 }
 
 const getProducts = () => {
-    return (dispatch) => {
-        axios.get('/api/products').then(res => {
-            dispatch({type: "GET_PRODUCTS_SUCCESS", payload: res.data});
+    return (dispatch, getState) => {
+        const state = getState();
+        const selectedDept = state.searchPage.selectedDepartment;
+        const selectedCategory = state.searchPage.selectedCategory;
+
+        var url = '/api/products';
+        if (selectedDept || selectedCategory) {
+            url = url + "?"
+            if (selectedDept) {
+                url = url + `departmentId=${selectedDept}`
+            }
+            if (selectedCategory) {
+                if(selectedDept) {
+                    url = url + "&"
+                }
+                url = url + `categoryId=${selectedCategory}`
+            }
+        }
+        axios.get(url).then(res => {
+            dispatch({ type: "GET_PRODUCTS_SUCCESS", payload: res.data });
         });
     }
 }
