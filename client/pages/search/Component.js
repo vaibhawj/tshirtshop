@@ -49,7 +49,8 @@ class Search extends React.Component {
                     selectedDepartment={this.props.selectedDepartment}
                     selectedCategory={this.props.selectedCategory}
                     searchDepartment={this.props.searchDepartment}
-                    searchCategory={this.props.searchCategory} />
+                    searchCategory={this.props.searchCategory}
+                    searchProducts={this.props.searchProducts} />
                 <main className={classes.content}>
                     <Grid container spacing={16}>
                         {

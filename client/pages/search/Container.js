@@ -22,6 +22,10 @@ const mapDispatchToProps = dispatch => {
         searchCategory: id => {
             dispatch({ type: "SET_CAT", payload: id });
             dispatch(getProducts());
+        },
+        searchProducts: searchString => {
+            dispatch({ type: "SET_SEARCH_STRING", payload: searchString });
+            dispatch(getProducts());
         }
     }
 }
@@ -31,18 +35,24 @@ const getProducts = () => {
         const state = getState();
         const selectedDept = state.searchPage.selectedDepartment;
         const selectedCategory = state.searchPage.selectedCategory;
-
+        const searchString = state.searchPage.searchString
         var url = '/api/products';
-        if (selectedDept || selectedCategory) {
-            url = url + "?"
+        if (selectedDept || selectedCategory || searchString) {
+            url = url + "?";
             if (selectedDept) {
-                url = url + `departmentId=${selectedDept}`
+                url = url + `departmentId=${selectedDept}`;
             }
             if (selectedCategory) {
-                if(selectedDept) {
-                    url = url + "&"
+                if (selectedDept) {
+                    url = url + "&";
                 }
-                url = url + `categoryId=${selectedCategory}`
+                url = url + `categoryId=${selectedCategory}`;
+            }
+            if (searchString) {
+                if (selectedDept || selectedCategory) {
+                    url = url + "&";
+                }
+                url = url + `searchString=${searchString}`;
             }
         }
         axios.get(url).then(res => {

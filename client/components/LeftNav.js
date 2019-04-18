@@ -37,7 +37,8 @@ class LeftNav extends React.Component {
             <ReactHeight onHeightReady={() => { }} className={classes.drawer}>
                 <Paper anchor="left">
                     <div className={classes.toolbar} />
-                    <TextField className={classes.searchInput} placeholder="Search" />
+                    <TextField className={classes.searchInput} placeholder="Search" 
+                    onChange={e => this.props.searchProducts(e.target.value)} />
                     <Typography variant="h5" noWrap className={classes.filterText}>Department</Typography>
                     <List>
                         {

@@ -1,30 +1,38 @@
 const pool = require('./connectionUtil');
 
-async function getProducts(departmentId, categoryId) {
+async function getProducts(departmentId, categoryId, searchString) {
     return new Promise((resolve, reject) => {
         var sql = `select p.*, d.department_id, d.name as department_name, c.category_id, c.name as category_name from product p 
         left outer join product_category pc on p.product_id = pc.product_id 
         left outer join category c on c.category_id = pc.category_id
         left outer join department d on c.department_id = d.department_id `;
 
-        if (departmentId || categoryId) {
-            sql = sql + "where "
+        if (departmentId || categoryId || searchString) {
+            sql = sql + "where ";
             if (departmentId) {
-                sql = sql + `d.department_id=${departmentId} `
+                sql = sql + `d.department_id=${departmentId} `;
             }
             if (categoryId) {
-                if(departmentId) {
-                    sql = sql + "and "
+                if (departmentId) {
+                    sql = sql + "and ";
                 }
-                sql = sql + `c.category_id=${categoryId}`
+                sql = sql + `c.category_id=${categoryId} `;
+            }
+            if (searchString) {
+                if (departmentId || categoryId) {
+                    sql = sql + "and ";
+                }
+                sql = sql + `(LOWER(p.name) like '%${searchString.toLowerCase()}%' 
+                            or LOWER(p.description) like '%${searchString.toLowerCase()}%'
+                            or LOWER(d.description) like '%${searchString.toLowerCase()}%')`;
             }
         }
-        sql = sql + ";"
+        sql = sql + ";";
         pool.query(sql, function (error, results, fields) {
-                if (error) throw error;
-                resolve(processProducts(results));
-            });
-    });
+            if (error) throw (error);
+            resolve(processProducts(results));
+        });
+    }).catch(e => console.log(e));
 }
 
 const processProducts = rows => {
@@ -33,7 +41,7 @@ const processProducts = rows => {
     const departments = [];
     const categories = [];
 
-    rows.forEach(row => {
+    rows && rows.forEach(row => {
         if (!departments[row.department_id]) {
             departments[row.department_id] = { id: row.department_id, name: row.department_name }
         }
