@@ -71,7 +71,7 @@ class Search extends React.Component {
                                                     <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>
                                                 </Typography>
                                                 <Typography gutterBottom align="center" className={classes.originalPrice}>
-                                                    {p.discountedPrice == 0 ? null : `$${p.price}` }
+                                                    {p.discountedPrice == 0 ? <br/> : `$${p.price}` }
                                                 </Typography>
                                             </CardContent>
                                         </Card>
