@@ -6,7 +6,9 @@ const mapStateToProps = state => {
     return {
         products: state.searchPage.products,
         departments: state.searchPage.departments,
-        categories: state.searchPage.categories
+        categories: state.searchPage.categories,
+        selectedDepartment: state.searchPage.selectedDepartment,
+        selectedCategory: state.searchPage.selectedCategory
     }
 }
 

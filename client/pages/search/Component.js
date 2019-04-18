@@ -5,11 +5,13 @@ import LeftNav from '../../components/LeftNav';
 
 const styles = theme => ({
     content: {
-        flexGrow: 1
+        flexGrow: 1,
+        paddingLeft: 40,
+        paddingTop: 100
     },
     media: {
-        width: 300,
-        height: 300,
+        width: 280,
+        height: 280,
         marginTop: 20,
         marginLeft: 10,
         marginRight: 10,
@@ -24,6 +26,10 @@ const styles = theme => ({
     originalPrice: {
         color: "grey",
         textDecorationLine: "line-through"
+    },
+    row: {
+        display: "flex",
+        flexDirection: "row"
     }
 });
 
@@ -37,12 +43,14 @@ class Search extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div>
+            <div className={classes.row}>
                 <LeftNav departments={this.props.departments}
                     categories={this.props.categories}
+                    selectedDepartment={this.props.selectedDepartment}
+                    selectedCategory={this.props.selectedCategory}
                     searchDepartment={this.props.searchDepartment}
                     searchCategory={this.props.searchCategory} />
-                <main className={classes.content} style={{ paddingLeft: 300, paddingTop: 100 }}>
+                <main className={classes.content}>
                     <Grid container spacing={16}>
                         {
                             this.props.products.map(p => {

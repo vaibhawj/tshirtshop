@@ -5,18 +5,19 @@ export default (state = { products: [], departments: [], categories: [] }, actio
         case "GET_PRODUCTS_SUCCESS": return {
             ...state,
             products: action.payload.products,
-            departments: action.payload.departments,
-            categories: action.payload.categories
+            departments: state.departments.length == 0 ? action.payload.departments : state.departments,
+            categories: state.categories.length == 0 ? action.payload.categories : state.categories
         }
         case "SET_DEPT": return {
             ...state,
-            selectedDepartment: action.payload
+            selectedDepartment: action.payload == state.selectedDepartment ? null : action.payload,
+            categories: [],
+            selectedCategory: null
         }
         case "SET_CAT": return {
             ...state,
-            selectedCategory: action.payload
+            selectedCategory: action.payload == state.selectedCategory ? null : action.payload
         }
-
     }
     return state;
 }

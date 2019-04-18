@@ -1,21 +1,15 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Drawer from '@material-ui/core/Drawer';
-import { Typography, TextField } from '@material-ui/core'
+import { Typography, TextField, Paper, ListItemText, ListItem, Divider, List } from '@material-ui/core';
+import { ReactHeight } from 'react-height';
 
 const drawerWidth = 270;
 
 const styles = theme => ({
-    root: {
-        display: 'flex',
-    },
     drawer: {
         width: drawerWidth,
-        flexShrink: 0
+        flexShrink: 0,
+        marginLeft: 20
     },
     drawerPaper: {
         width: drawerWidth
@@ -23,13 +17,16 @@ const styles = theme => ({
     toolbar: theme.mixins.toolbar,
     searchInput: {
         marginTop: 30,
-        marginLeft: 8,
-        marginRight: 8,
-        marginBottom: 20
+        paddingLeft: 10,
+        marginBottom: 20,
+        width: "90%"
     },
     filterText: {
         color: 'grey',
         marginLeft: 8
+    },
+    listItem: {
+        textAlign: "center"
     }
 });
 
@@ -37,47 +34,48 @@ class LeftNav extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                anchor="left"
-            >
-                <div className={classes.toolbar} />
-                <Divider />
-                <TextField className={classes.searchInput} placeholder="Search" />
-                <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
-                <List>
-                    {
-                        this.props.departments.map(d => (
-                            <ListItem button key={d.id} onClick={e => {
-                                e.preventDefault();
-                                this.props.searchDepartment(d.id)
-                            }
-                            }>
-                                <ListItemText primary={d.name} />
-                            </ListItem>
-                        ))
-                    }
-                </List>
-                <Divider />
-                <Typography variant="h6" noWrap className={classes.filterText}>Category</Typography>
-                <List>
-                    {
-                        this.props.categories.map(c => (
-                            <ListItem button key={c.id} onClick={e => {
-                                e.preventDefault();
-                                this.props.searchCategory(c.id)
-                            }
-                            }>
-                                <ListItemText primary={c.name} />
-                            </ListItem>
-                        ))
-                    }
-                </List>
-            </Drawer>
+            <ReactHeight onHeightReady={() => { }} className={classes.drawer}>
+                <Paper anchor="left">
+                    <div className={classes.toolbar} />
+                    <Divider />
+                    <TextField className={classes.searchInput} placeholder="Search" />
+                    <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
+                    <List>
+                        {
+                            this.props.departments.map(d => {
+                                return (
+                                    <ListItem button key={d.id} selected={this.props.selectedDepartment == d.id}
+                                        className={classes.listItem}
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.props.searchDepartment(d.id)
+                                        }
+                                        }>
+                                        <ListItemText primary={d.name.toUpperCase()} />
+                                    </ListItem>
+                                )
+                            })
+                        }
+                    </List>
+                    <Divider />
+                    <Typography variant="h6" noWrap className={classes.filterText}>Category</Typography>
+                    <List>
+                        {
+                            this.props.categories.map(c => (
+                                <ListItem button key={c.id} selected={this.props.selectedCategory == c.id}
+                                    className={classes.listItem}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.props.searchCategory(c.id)
+                                    }
+                                    }>
+                                    <ListItemText primary={c.name.toUpperCase()} />
+                                </ListItem>
+                            ))
+                        }
+                    </List>
+                </Paper>
+            </ReactHeight>
         )
     }
 }
