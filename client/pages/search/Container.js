@@ -1,16 +1,22 @@
 import SearchComponent from './Component';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { NUM_OF_RECORDS_PER_PAGE } from './reducer';
 
 const mapStateToProps = state => {
     return {
-        products: state.searchPage.products,
+        products: state.searchPage.products.slice((state.searchPage.currentPage - 1) * NUM_OF_RECORDS_PER_PAGE, (state.searchPage.currentPage - 1) * NUM_OF_RECORDS_PER_PAGE + NUM_OF_RECORDS_PER_PAGE),
         departments: state.searchPage.departments,
         categories: state.searchPage.categories,
         selectedDepartment: state.searchPage.selectedDepartment,
         selectedCategory: state.searchPage.selectedCategory,
+<<<<<<< HEAD
         currentPage: 4,
         totalPages: 15
+=======
+        currentPage: state.searchPage.currentPage,
+        totalPages: state.searchPage.totalPages
+>>>>>>> Pagination first cut
     }
 }
 
@@ -28,6 +34,9 @@ const mapDispatchToProps = dispatch => {
         searchProducts: searchString => {
             dispatch({ type: "SET_SEARCH_STRING", payload: searchString });
             dispatch(getProducts());
+        },
+        goToPage: pageNum => {
+            dispatch({ type: "SET_CURR_PAGE", payload: pageNum })
         }
     }
 }

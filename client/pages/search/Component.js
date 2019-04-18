@@ -52,7 +52,7 @@ class Search extends React.Component {
                     searchCategory={this.props.searchCategory}
                     searchProducts={this.props.searchProducts} />
                 <main className={classes.content}>
-                    <Pagination totalPages={this.props.totalPages} currentPage={this.props.currentPage} />
+                    <Pagination totalPages={this.props.totalPages} currentPage={this.props.currentPage} onPageChange={this.props.goToPage} />
                     <Grid container spacing={16}>
                         {
                             this.props.products.map(p => {
@@ -78,6 +78,7 @@ class Search extends React.Component {
                                         </Card>
                                     </Grid>)
                             })
+                        }
                         }
                     </Grid>
                 </main>>
