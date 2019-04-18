@@ -8,7 +8,9 @@ const mapStateToProps = state => {
         departments: state.searchPage.departments,
         categories: state.searchPage.categories,
         selectedDepartment: state.searchPage.selectedDepartment,
-        selectedCategory: state.searchPage.selectedCategory
+        selectedCategory: state.searchPage.selectedCategory,
+        currentPage: 4,
+        totalPages: 15
     }
 }
 

@@ -30,7 +30,6 @@ class App extends React.Component {
             </Toolbar>
           </AppBar>
           <Switch>
-            {/* <Route exact path="/room/:roomName" component={hoc(Chat)} /> */}
             <Route component={hoc(SearchPage)} />
           </Switch>
         </div>

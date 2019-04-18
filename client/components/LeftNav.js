@@ -1,6 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography, TextField, Paper, ListItemText, ListItem, Divider, List } from '@material-ui/core';
+import { Typography, TextField, Paper, ListItemText, ListItem, Divider, List, withStyles } from '@material-ui/core';
 import { ReactHeight } from 'react-height';
 
 const drawerWidth = 270;

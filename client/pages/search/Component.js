@@ -1,7 +1,7 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography, Card, CardContent, CardMedia, Grid } from '@material-ui/core';
+import { Typography, Card, CardContent, CardMedia, Grid, withStyles } from '@material-ui/core';
 import LeftNav from '../../components/LeftNav';
+import Pagination from '../../components/Pagination';
 
 const styles = theme => ({
     content: {
@@ -52,6 +52,7 @@ class Search extends React.Component {
                     searchCategory={this.props.searchCategory}
                     searchProducts={this.props.searchProducts} />
                 <main className={classes.content}>
+                    <Pagination totalPages={this.props.totalPages} currentPage={this.props.currentPage} />
                     <Grid container spacing={16}>
                         {
                             this.props.products.map(p => {
@@ -71,7 +72,7 @@ class Search extends React.Component {
                                                     <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>
                                                 </Typography>
                                                 <Typography gutterBottom align="center" className={classes.originalPrice}>
-                                                    {p.discountedPrice == 0 ? <br/> : `$${p.price}` }
+                                                    {p.discountedPrice == 0 ? <br /> : `$${p.price}`}
                                                 </Typography>
                                             </CardContent>
                                         </Card>
