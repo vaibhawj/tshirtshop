@@ -22,7 +22,7 @@ const styles = theme => ({
         width: "90%"
     },
     filterText: {
-        color: 'grey',
+        color: '#989898',
         marginLeft: 8
     },
     listItem: {
@@ -37,39 +37,38 @@ class LeftNav extends React.Component {
             <ReactHeight onHeightReady={() => { }} className={classes.drawer}>
                 <Paper anchor="left">
                     <div className={classes.toolbar} />
-                    <Divider />
                     <TextField className={classes.searchInput} placeholder="Search" />
-                    <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
+                    <Typography variant="h5" noWrap className={classes.filterText}>Department</Typography>
                     <List>
                         {
                             this.props.departments.map(d => {
                                 return (
-                                    <ListItem button key={d.id} selected={this.props.selectedDepartment == d.id}
+                                    <ListItem button key={d.id} divider selected={this.props.selectedDepartment == d.id}
                                         className={classes.listItem}
                                         onClick={e => {
                                             e.preventDefault();
                                             this.props.searchDepartment(d.id)
                                         }
                                         }>
-                                        <ListItemText primary={d.name.toUpperCase()} />
+                                        <ListItemText secondary={d.name.toUpperCase()} secondaryTypographyProps={{variant: "h6"}} />
                                     </ListItem>
                                 )
                             })
                         }
                     </List>
                     <Divider />
-                    <Typography variant="h6" noWrap className={classes.filterText}>Category</Typography>
+                    <Typography variant="h5" noWrap className={classes.filterText}>Category</Typography>
                     <List>
                         {
                             this.props.categories.map(c => (
-                                <ListItem button key={c.id} selected={this.props.selectedCategory == c.id}
+                                <ListItem button key={c.id} divider selected={this.props.selectedCategory == c.id}
                                     className={classes.listItem}
                                     onClick={e => {
                                         e.preventDefault();
                                         this.props.searchCategory(c.id)
                                     }
                                     }>
-                                    <ListItemText primary={c.name.toUpperCase()} />
+                                    <ListItemText secondary={c.name.toUpperCase()} secondaryTypographyProps={{variant: "h6"}} />
                                 </ListItem>
                             ))
                         }
