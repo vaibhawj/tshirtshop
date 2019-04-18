@@ -64,8 +64,8 @@ class Search extends React.Component {
                                                 title="Paella dish"
                                             />
                                             <CardContent>
-                                                <Typography color="textSecondary" gutterBottom align="center">
-                                                    <b>{p.name}</b>
+                                                <Typography color="textSecondary" gutterBottom align="center" variant="subheading">
+                                                    {p.name}
                                                 </Typography>
                                                 <Typography gutterBottom align="center" className={classes.sellingPrice} variant="h6">
                                                     <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>

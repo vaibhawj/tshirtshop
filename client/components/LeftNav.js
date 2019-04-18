@@ -19,7 +19,7 @@ const styles = theme => ({
         marginTop: 30,
         paddingLeft: 10,
         marginBottom: 20,
-        width: "90%"
+        width: "92%"
     },
     filterText: {
         color: '#989898',
@@ -39,7 +39,7 @@ class LeftNav extends React.Component {
                     <div className={classes.toolbar} />
                     <TextField className={classes.searchInput} placeholder="Search" 
                     onChange={e => this.props.searchProducts(e.target.value)} />
-                    <Typography variant="h5" noWrap className={classes.filterText}>Department</Typography>
+                    <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
                     <List>
                         {
                             this.props.departments.map(d => {
@@ -51,14 +51,14 @@ class LeftNav extends React.Component {
                                             this.props.searchDepartment(d.id)
                                         }
                                         }>
-                                        <ListItemText secondary={d.name.toUpperCase()} secondaryTypographyProps={{variant: "h6"}} />
+                                        <ListItemText secondary={d.name.toUpperCase()} secondaryTypographyProps={{variant: "button"}} />
                                     </ListItem>
                                 )
                             })
                         }
                     </List>
                     <Divider />
-                    <Typography variant="h5" noWrap className={classes.filterText}>Category</Typography>
+                    <Typography variant="h6" noWrap className={classes.filterText}>Category</Typography>
                     <List>
                         {
                             this.props.categories.map(c => (
@@ -69,7 +69,7 @@ class LeftNav extends React.Component {
                                         this.props.searchCategory(c.id)
                                     }
                                     }>
-                                    <ListItemText secondary={c.name.toUpperCase()} secondaryTypographyProps={{variant: "h6"}} />
+                                    <ListItemText secondary={c.name.toUpperCase()} secondaryTypographyProps={{variant: "button"}} />
                                 </ListItem>
                             ))
                         }
