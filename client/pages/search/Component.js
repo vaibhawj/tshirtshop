@@ -79,7 +79,6 @@ class Search extends React.Component {
                                     </Grid>)
                             })
                         }
-                        }
                     </Grid>
                 </main>>
             </div>
