@@ -10,13 +10,8 @@ const mapStateToProps = state => {
         categories: state.searchPage.categories,
         selectedDepartment: state.searchPage.selectedDepartment,
         selectedCategory: state.searchPage.selectedCategory,
-<<<<<<< HEAD
-        currentPage: 4,
-        totalPages: 15
-=======
         currentPage: state.searchPage.currentPage,
         totalPages: state.searchPage.totalPages
->>>>>>> Pagination first cut
     }
 }
 
