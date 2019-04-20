@@ -1,31 +1,14 @@
 import React from 'react';
-import { Typography, Card, CardContent, CardMedia, Grid, withStyles } from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import LeftNav from '../../components/LeftNav';
 import Pagination from '../../components/Pagination';
+import Card from '../../components/ProductCard';
 
 const styles = theme => ({
     content: {
         flexGrow: 1,
         paddingLeft: 40,
         paddingTop: 100
-    },
-    media: {
-        width: 280,
-        height: 280,
-        marginTop: 20,
-        marginLeft: 10,
-        marginRight: 10,
-        backgroundPosition: 'inherit'
-    },
-    card: {
-
-    },
-    sellingPrice: {
-        color: "deeppink"
-    },
-    originalPrice: {
-        color: "grey",
-        textDecorationLine: "line-through"
     },
     row: {
         display: "flex",
@@ -58,29 +41,12 @@ class Search extends React.Component {
                             this.props.products.map(p => {
                                 return (
                                     <Grid item key={p.productId}>
-                                        <Card className={classes.card}>
-                                            <CardMedia
-                                                className={classes.media}
-                                                image={`images/${p.image}`}
-                                                title="Paella dish"
-                                            />
-                                            <CardContent>
-                                                <Typography color="textSecondary" gutterBottom align="center" variant="subheading">
-                                                    {p.name}
-                                                </Typography>
-                                                <Typography gutterBottom align="center" className={classes.sellingPrice} variant="h6">
-                                                    <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>
-                                                </Typography>
-                                                <Typography gutterBottom align="center" className={classes.originalPrice}>
-                                                    {p.discountedPrice == 0 ? <br /> : `$${p.price}`}
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
+                                        <Card product={p} />
                                     </Grid>)
                             })
                         }
                     </Grid>
-                </main>>
+                </main>
             </div>
         )
     }
