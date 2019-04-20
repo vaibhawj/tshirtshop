@@ -11,7 +11,8 @@ const mapStateToProps = state => {
         selectedDepartment: state.searchPage.selectedDepartment,
         selectedCategory: state.searchPage.selectedCategory,
         currentPage: state.searchPage.currentPage,
-        totalPages: state.searchPage.totalPages
+        totalPages: state.searchPage.totalPages,
+        cartItems: state.cart.items
     }
 }
 
@@ -31,7 +32,10 @@ const mapDispatchToProps = dispatch => {
             dispatch(getProducts());
         },
         goToPage: pageNum => {
-            dispatch({ type: "SET_CURR_PAGE", payload: pageNum })
+            dispatch({ type: "SET_CURR_PAGE", payload: pageNum });
+        },
+        addToCart: item => {
+            dispatch({ type: "ADD_TO_CART", payload: item });
         }
     }
 }

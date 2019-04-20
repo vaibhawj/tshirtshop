@@ -33,7 +33,8 @@ class Search extends React.Component {
                     selectedCategory={this.props.selectedCategory}
                     searchDepartment={this.props.searchDepartment}
                     searchCategory={this.props.searchCategory}
-                    searchProducts={this.props.searchProducts} />
+                    searchProducts={this.props.searchProducts}
+                    cartItems={this.props.cartItems} />
                 <main className={classes.content}>
                     <Pagination totalPages={this.props.totalPages} currentPage={this.props.currentPage} onPageChange={this.props.goToPage} />
                     <Grid container spacing={16}>
@@ -41,7 +42,7 @@ class Search extends React.Component {
                             this.props.products.map(p => {
                                 return (
                                     <Grid item key={p.productId}>
-                                        <Card product={p} />
+                                        <Card product={p} addToCart={this.props.addToCart} />
                                     </Grid>)
                             })
                         }

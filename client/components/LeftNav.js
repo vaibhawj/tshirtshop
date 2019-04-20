@@ -25,7 +25,18 @@ const styles = theme => ({
         marginLeft: 8
     },
     listItem: {
-        textAlign: "center"
+        textAlign: "center",
+        backgroundColor: "#F2F2F2",
+        marginBottom: 5
+    },
+    cartList: {
+        backgroundColor: "#F2F2F2",
+        marginBottom: 20
+    },
+    cartItem: {
+        paddingLeft: 10,
+        paddingTop: 5,
+        paddingBottom: 5
     }
 });
 
@@ -36,8 +47,8 @@ class LeftNav extends React.Component {
             <ReactHeight onHeightReady={() => { }} className={classes.drawer}>
                 <Paper anchor="left">
                     <div className={classes.toolbar} />
-                    <TextField className={classes.searchInput} placeholder="Search" 
-                    onChange={e => this.props.searchProducts(e.target.value)} />
+                    <TextField className={classes.searchInput} placeholder="Search"
+                        onChange={e => this.props.searchProducts(e.target.value)} />
                     <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
                     <List>
                         {
@@ -50,13 +61,12 @@ class LeftNav extends React.Component {
                                             this.props.searchDepartment(d.id)
                                         }
                                         }>
-                                        <ListItemText secondary={d.name.toUpperCase()} secondaryTypographyProps={{variant: "button"}} />
+                                        <ListItemText secondary={d.name.toUpperCase()} secondaryTypographyProps={{ variant: "button" }} />
                                     </ListItem>
                                 )
                             })
                         }
                     </List>
-                    <Divider />
                     <Typography variant="h6" noWrap className={classes.filterText}>Category</Typography>
                     <List>
                         {
@@ -68,11 +78,30 @@ class LeftNav extends React.Component {
                                         this.props.searchCategory(c.id)
                                     }
                                     }>
-                                    <ListItemText secondary={c.name.toUpperCase()} secondaryTypographyProps={{variant: "button"}} />
+                                    <ListItemText secondary={c.name.toUpperCase()} secondaryTypographyProps={{ variant: "button" }} />
                                 </ListItem>
                             ))
                         }
                     </List>
+                    {
+                        this.props.cartItems.length > 0 &&
+                        <div>
+                            <Typography variant="h6" noWrap className={classes.filterText}>Cart</Typography>
+                            <List>
+                                {
+                                    this.props.cartItems.map(i => {
+                                        return (
+                                            <div className={classes.cartList} key={`${i.id}-${i.size}-${i.color}`}>
+                                                <Typography variant="subtitle1" className={classes.cartItem}>1 <span style={{ color: "deeppink" }}>x</span> <span style={{ color: "grey" }}>{i.name}</span></Typography>
+                                                <Typography variant="subtitle2" className={classes.cartItem} color="textSecondary">Size: {i.size}</Typography>
+                                                <Typography variant="subtitle2" className={classes.cartItem} color="textSecondary">Color: {i.color}</Typography>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </List>
+                        </div>
+                    }
                 </Paper>
             </ReactHeight>
         )

@@ -84,7 +84,9 @@ class ProductCard extends React.Component {
         this.state = {
             mouseOver: false,
             sizes: null,
-            colors: null
+            colors: null,
+            selectedSize: null,
+            selectedColor: null
         }
         this.fetchAttributes = this.fetchAttributes.bind(this);
     }
@@ -94,7 +96,9 @@ class ProductCard extends React.Component {
             axios.get(`/api/products/${this.props.product.productId}/attributes`).then(res => {
                 this.setState({
                     sizes: res.data.sizes,
-                    colors: res.data.colors
+                    colors: res.data.colors,
+                    selectedSize: res.data.sizes[0].value,
+                    selectedColor: res.data.colors[0].value
                 });
             });
         }
@@ -137,21 +141,42 @@ class ProductCard extends React.Component {
 
                             <div className={classes.form}>
                                 <FormControl className={classes.formControl}>
-                                    <Select value={this.state.sizes[0].id}>
+                                    <Select value={this.state.selectedSize} onChange={
+                                        e => {
+                                            e.preventDefault();
+                                            this.setState({ selectedSize: e.target.value });
+                                        }
+                                    }>
                                         {
-                                            this.state.sizes.map(s => <MenuItem key={s.id} value={s.id}>{s.value}</MenuItem>)
+                                            this.state.sizes.map(s => <MenuItem key={s.id} value={s.value}>{s.value}</MenuItem>)
                                         }
                                     </Select>
                                 </FormControl>
                                 <FormControl className={classes.formControl}>
-                                    <Select value={this.state.colors[0].id}>
+                                    <Select value={this.state.selectedColor} onChange={
+                                        e => {
+                                            e.preventDefault();
+                                            this.setState({ selectedColor: e.target.value });
+                                        }
+                                    }>
                                         {
-                                            this.state.colors.map(c => <MenuItem key={c.id} value={c.id}>{c.value}</MenuItem>)
+                                            this.state.colors.map(c => <MenuItem key={c.id} value={c.value}>{c.value}</MenuItem>)
                                         }
                                     </Select>
                                 </FormControl>
                             </div>
-                            <Button color="secondary" variant="contained" className={classes.button}>Add to cart</Button>
+                            <Button color="secondary" variant="contained" className={classes.button}
+                                onClick={
+                                    e => {
+                                        e.preventDefault();
+                                        this.props.addToCart({
+                                            id: p.productId,
+                                            name: p.name,
+                                            size: this.state.selectedSize,
+                                            color: this.state.selectedColor
+                                        });
+                                    }
+                                }>Add to cart</Button>
                         </form>
                     }
                 </CardContent>
