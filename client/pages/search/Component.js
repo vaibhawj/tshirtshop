@@ -7,7 +7,7 @@ import Card from '../../components/ProductCard';
 const styles = theme => ({
     content: {
         flexGrow: 1,
-        paddingLeft: 40,
+        paddingLeft: 23,
         paddingTop: 100
     },
     row: {

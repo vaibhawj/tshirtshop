@@ -7,8 +7,8 @@ import axios from 'axios';
 
 const styles = theme => ({
     media: {
-        width: 280,
-        height: 280,
+        width: 270,
+        height: 270,
         marginTop: 20,
         marginLeft: 10,
         marginRight: 10,
@@ -49,7 +49,7 @@ const styles = theme => ({
     },
     button: {
         marginTop: "20%",
-        width: 280,
+        width: 270,
         left: "50%",
         marginLeft: "-47%"
     }
