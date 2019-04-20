@@ -1,5 +1,9 @@
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography, withStyles } from '@material-ui/core';
+import {
+    Card, CardMedia, CardContent, Typography, withStyles,
+    FormControl, Select, MenuItem, Button
+} from '@material-ui/core';
+import axios from 'axios';
 
 const styles = theme => ({
     media: {
@@ -27,17 +31,72 @@ const styles = theme => ({
     },
     actionContent: {
         zIndex: 999,
-        top: "10%",
+        top: "5%",
+        left: "50%",
+        marginLeft: "-50%",
+        width: 300,
         position: "absolute"
+    },
+    form: {
+        marginTop: 100,
+        display: "flex",
+        flexDirection: "row"
+    },
+    formControl: {
+        margin: 10,
+        left: "15%",
+        minWidth: 80,
+    },
+    button: {
+        marginTop: "20%",
+        width: 280,
+        left: "50%",
+        marginLeft: "-47%"
     }
 });
+
+class ItemDescription extends React.Component {
+    render() {
+        const p = this.props.product;
+        const { classes } = this.props;
+        return (
+            <div>
+                <Typography color="textSecondary" gutterBottom align="center" variant="subheading">
+                    {p.name}
+                </Typography>
+                <Typography gutterBottom align="center" className={classes.sellingPrice} variant="h6">
+                    <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>
+                </Typography>
+                <Typography gutterBottom align="center" className={classes.originalPrice}>
+                    {p.discountedPrice == 0 ? <br /> : `$${p.price}`}
+                </Typography>
+            </div>
+        )
+    }
+}
+
+const ItemDescriptionWithStyle = withStyles(styles)(ItemDescription);
 
 class ProductCard extends React.Component {
 
     constructor() {
         super()
         this.state = {
-            mouseOver: false
+            mouseOver: false,
+            sizes: null,
+            colors: null
+        }
+        this.fetchAttributes = this.fetchAttributes.bind(this);
+    }
+
+    fetchAttributes() {
+        if (!this.state.sizes || !this.state.colors) {
+            axios.get(`/api/products/${this.props.product.productId}/attributes`).then(res => {
+                this.setState({
+                    sizes: res.data.sizes,
+                    colors: res.data.colors
+                });
+            });
         }
     }
 
@@ -50,6 +109,7 @@ class ProductCard extends React.Component {
                     e => {
                         e.preventDefault();
                         this.setState({ mouseOver: true })
+                        this.fetchAttributes();
                     }
                 }
                 onMouseOut={
@@ -66,27 +126,34 @@ class ProductCard extends React.Component {
                         title={p.name}
                     />
                     <CardContent>
-                        <Typography color="textSecondary" gutterBottom align="center" variant="subheading">
-                            {p.name}
-                        </Typography>
-                        <Typography gutterBottom align="center" className={classes.sellingPrice} variant="h6">
-                            <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>
-                        </Typography>
-                        <Typography gutterBottom align="center" className={classes.originalPrice}>
-                            {p.discountedPrice == 0 ? <br /> : `$${p.price}`}
-                        </Typography>
+                        <ItemDescriptionWithStyle product={p} />
                     </CardContent>
                 </CardContent>
                 <CardContent hidden={!this.state.mouseOver} className={classes.actionContent}>
-                    <Typography color="textSecondary" gutterBottom align="center" variant="subheading">
-                        {p.name}
-                    </Typography>
-                    <Typography gutterBottom align="center" className={classes.sellingPrice} variant="h6">
-                        <b>${p.discountedPrice == 0 ? p.price : p.discountedPrice}</b>
-                    </Typography>
-                    <Typography gutterBottom align="center" className={classes.originalPrice}>
-                        {p.discountedPrice == 0 ? <br /> : `$${p.price}`}
-                    </Typography>
+                    <ItemDescriptionWithStyle product={p} />
+                    {
+                        this.state.sizes && this.state.colors &&
+                        <form>
+
+                            <div className={classes.form}>
+                                <FormControl className={classes.formControl}>
+                                    <Select value={this.state.sizes[0].id}>
+                                        {
+                                            this.state.sizes.map(s => <MenuItem key={s.id} value={s.id}>{s.value}</MenuItem>)
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <FormControl className={classes.formControl}>
+                                    <Select value={this.state.colors[0].id}>
+                                        {
+                                            this.state.colors.map(c => <MenuItem key={c.id} value={c.id}>{c.value}</MenuItem>)
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </div>
+                            <Button color="secondary" variant="contained" className={classes.button}>Add to cart</Button>
+                        </form>
+                    }
                 </CardContent>
             </Card>
         )

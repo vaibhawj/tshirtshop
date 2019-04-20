@@ -102,6 +102,33 @@ const processProducts = rows => {
     };
 }
 
+async function getProductAttributes(productId) {
+    return new Promise((resolve, reject) => {
+        var sql = `select name, value , av.attribute_value_id as id from product_attribute pa
+        inner join attribute_value av on av.attribute_value_id = pa.attribute_value_id
+        inner join attribute a on a.attribute_id = av.attribute_id where product_id=${productId};`;
+
+        pool.query(sql, function (error, results, fields) {
+            if (error) throw (error);
+            resolve(processProductAttributes(results));
+        });
+    }).catch(e => console.log(e));
+}
+
+const processProductAttributes = rows => {
+    const sizes = [];
+    const colors = [];
+    rows && rows.forEach(row => {
+        if (row.name == "Size") {
+            sizes.push({ value: row.value, id: row.id });
+        } else if (row.name == "Color") {
+            colors.push({ value: row.value, id: row.id });
+        }
+    })
+    return { sizes, colors };
+}
+
 module.exports = {
-    getProducts
+    getProducts,
+    getProductAttributes
 }
