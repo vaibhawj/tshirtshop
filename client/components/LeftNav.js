@@ -24,6 +24,10 @@ const styles = theme => ({
         color: '#989898',
         marginLeft: 8
     },
+    filterList: {
+        marginLeft: 10,
+        marginRight: 10
+    },
     listItem: {
         textAlign: "center",
         backgroundColor: "#F2F2F2",
@@ -31,7 +35,9 @@ const styles = theme => ({
     },
     cartList: {
         backgroundColor: "#F2F2F2",
-        marginBottom: 20
+        marginBottom: 15,
+        marginLeft: 10,
+        marginRight: 10
     },
     cartItem: {
         paddingLeft: 10,
@@ -54,15 +60,17 @@ class LeftNav extends React.Component {
                         {
                             this.props.departments.map(d => {
                                 return (
-                                    <ListItem button key={d.id} divider selected={this.props.selectedDepartment == d.id}
-                                        className={classes.listItem}
-                                        onClick={e => {
-                                            e.preventDefault();
-                                            this.props.searchDepartment(d.id)
-                                        }
-                                        }>
-                                        <ListItemText secondary={d.name.toUpperCase()} secondaryTypographyProps={{ variant: "button" }} />
-                                    </ListItem>
+                                    <div className={classes.filterList}>
+                                        <ListItem button key={d.id} divider selected={this.props.selectedDepartment == d.id}
+                                            className={classes.listItem}
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                this.props.searchDepartment(d.id)
+                                            }
+                                            }>
+                                            <ListItemText secondary={d.name.toUpperCase()} secondaryTypographyProps={{ variant: "button" }} />
+                                        </ListItem>
+                                    </div>
                                 )
                             })
                         }
@@ -71,15 +79,17 @@ class LeftNav extends React.Component {
                     <List>
                         {
                             this.props.categories.map(c => (
-                                <ListItem button key={c.id} divider selected={this.props.selectedCategory == c.id}
-                                    className={classes.listItem}
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        this.props.searchCategory(c.id)
-                                    }
-                                    }>
-                                    <ListItemText secondary={c.name.toUpperCase()} secondaryTypographyProps={{ variant: "button" }} />
-                                </ListItem>
+                                <div className={classes.filterList}>
+                                    <ListItem button key={c.id} divider selected={this.props.selectedCategory == c.id}
+                                        className={classes.listItem}
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.props.searchCategory(c.id)
+                                        }
+                                        }>
+                                        <ListItemText secondary={c.name.toUpperCase()} secondaryTypographyProps={{ variant: "button" }} />
+                                    </ListItem>
+                                </div>
                             ))
                         }
                     </List>
