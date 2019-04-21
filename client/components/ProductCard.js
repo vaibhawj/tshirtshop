@@ -173,7 +173,8 @@ class ProductCard extends React.Component {
                                             id: p.productId,
                                             name: p.name,
                                             size: this.state.selectedSize,
-                                            color: this.state.selectedColor
+                                            color: this.state.selectedColor,
+                                            price: p.discountedPrice == 0 ? p.price : p.discountedPrice
                                         });
                                     }
                                 }>Add to cart</Button>

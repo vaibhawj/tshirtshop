@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, TextField, Paper, ListItemText, ListItem, Divider, List, withStyles } from '@material-ui/core';
+import { Typography, TextField, Paper, ListItemText, ListItem, List, withStyles, Button } from '@material-ui/core';
 import { ReactHeight } from 'react-height';
 
 const drawerWidth = 270;
@@ -20,7 +20,7 @@ const styles = theme => ({
         marginBottom: 20,
         width: "92%"
     },
-    filterText: {
+    text: {
         color: '#989898',
         marginLeft: 8
     },
@@ -43,25 +43,31 @@ const styles = theme => ({
         paddingLeft: 10,
         paddingTop: 5,
         paddingBottom: 5
+    },
+    totalPrice: {
+        display: "flex",
+        flexDirection: "row"
     }
 });
 
 class LeftNav extends React.Component {
     render() {
         const { classes } = this.props;
+        const cartItems = this.props.cartItems;
+        const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         return (
             <ReactHeight onHeightReady={() => { }} className={classes.drawer}>
                 <Paper anchor="left">
                     <div className={classes.toolbar} />
                     <TextField className={classes.searchInput} placeholder="Search"
                         onChange={e => this.props.searchProducts(e.target.value)} />
-                    <Typography variant="h6" noWrap className={classes.filterText}>Department</Typography>
+                    <Typography variant="h6" noWrap className={classes.text}>Department</Typography>
                     <List>
                         {
                             this.props.departments.map(d => {
                                 return (
-                                    <div className={classes.filterList}>
-                                        <ListItem button key={d.id} divider selected={this.props.selectedDepartment == d.id}
+                                    <div className={classes.filterList} key={`d-${d.id}`}>
+                                        <ListItem button divider selected={this.props.selectedDepartment == d.id}
                                             className={classes.listItem}
                                             onClick={e => {
                                                 e.preventDefault();
@@ -75,12 +81,12 @@ class LeftNav extends React.Component {
                             })
                         }
                     </List>
-                    <Typography variant="h6" noWrap className={classes.filterText}>Category</Typography>
+                    <Typography variant="h6" noWrap className={classes.text}>Category</Typography>
                     <List>
                         {
                             this.props.categories.map(c => (
-                                <div className={classes.filterList}>
-                                    <ListItem button key={c.id} divider selected={this.props.selectedCategory == c.id}
+                                <div className={classes.filterList} key={`c-${c.id}`}>
+                                    <ListItem button divider selected={this.props.selectedCategory == c.id}
                                         className={classes.listItem}
                                         onClick={e => {
                                             e.preventDefault();
@@ -94,15 +100,15 @@ class LeftNav extends React.Component {
                         }
                     </List>
                     {
-                        this.props.cartItems.length > 0 &&
+                        cartItems.length > 0 &&
                         <div>
-                            <Typography variant="h6" noWrap className={classes.filterText}>Cart</Typography>
+                            <Typography variant="h6" noWrap className={classes.text}>Cart</Typography>
                             <List>
                                 {
-                                    this.props.cartItems.map(i => {
+                                    cartItems.map(i => {
                                         return (
-                                            <div className={classes.cartList} key={`${i.id}-${i.size}-${i.color}`}>
-                                                <Typography variant="subtitle1" className={classes.cartItem}>1 <span style={{ color: "deeppink" }}>x</span> <span style={{ color: "grey" }}>{i.name}</span></Typography>
+                                            <div className={classes.cartList} key={`d-${i.id}-${i.size}-${i.color}`}>
+                                                <Typography variant="subtitle1" className={classes.cartItem}>{i.quantity} <span style={{ color: "deeppink" }}>x</span> <span style={{ color: "grey" }}>{i.name}</span></Typography>
                                                 <Typography variant="subtitle2" className={classes.cartItem} color="textSecondary">Size: {i.size}</Typography>
                                                 <Typography variant="subtitle2" className={classes.cartItem} color="textSecondary">Color: {i.color}</Typography>
                                             </div>
@@ -110,6 +116,15 @@ class LeftNav extends React.Component {
                                     })
                                 }
                             </List>
+                            <div style={{ width: 300, marginLeft: "52%" }}>
+                                <div className={classes.totalPrice}>
+                                    <Typography variant="body1" color="textSecondary" noWrap style={{ marginRight: 5 }}>Total Price:</Typography>
+                                    <Typography noWrap style={{ color: "deeppink" }}>${totalPrice.toFixed(2)}</Typography>
+                                </div>
+                            </div>
+                            <div style={{ textAlign: "center", marginTop: 10, marginBottom: 10 }}>
+                                <Button fullWidth variant="contained" color="secondary" >View Details</Button>
+                            </div>
                         </div>
                     }
                 </Paper>
