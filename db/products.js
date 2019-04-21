@@ -116,16 +116,15 @@ async function getProductAttributes(productId) {
 }
 
 const processProductAttributes = rows => {
-    const sizes = [];
-    const colors = [];
+    const attributes = [];
     rows && rows.forEach(row => {
-        if (row.name == "Size") {
-            sizes.push({ value: row.value, id: row.id });
-        } else if (row.name == "Color") {
-            colors.push({ value: row.value, id: row.id });
-        }
+        attributes.push({
+            id: row.id,
+            name: row.name,
+            value: row.value
+        });
     })
-    return { sizes, colors };
+    return attributes;
 }
 
 module.exports = {

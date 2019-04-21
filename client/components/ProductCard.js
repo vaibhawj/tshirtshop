@@ -94,11 +94,13 @@ class ProductCard extends React.Component {
     fetchAttributes() {
         if (!this.state.sizes || !this.state.colors) {
             axios.get(`/api/products/${this.props.product.productId}/attributes`).then(res => {
+                const sizes = res.data.filter(attr => attr.name == "Size");
+                const colors = res.data.filter(attr => attr.name == "Color");
                 this.setState({
-                    sizes: res.data.sizes,
-                    colors: res.data.colors,
-                    selectedSize: res.data.sizes[0].value,
-                    selectedColor: res.data.colors[0].value
+                    sizes,
+                    colors,
+                    selectedSize: sizes[0].value,
+                    selectedColor: colors[0].value
                 });
             });
         }
