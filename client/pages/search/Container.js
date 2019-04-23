@@ -36,6 +36,9 @@ const mapDispatchToProps = dispatch => {
         },
         addToCart: item => {
             dispatch({ type: "ADD_TO_CART", payload: item });
+        },
+        removeFromCart: item => {
+            dispatch({ type: "REMOVE_FROM_CART", payload: item });
         }
     }
 }

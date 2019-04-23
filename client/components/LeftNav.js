@@ -1,6 +1,9 @@
 import React from 'react';
-import { Typography, TextField, Paper, ListItemText, ListItem, List, withStyles, Button } from '@material-ui/core';
+import {
+    Typography, TextField, Paper, ListItemText, ListItem, List, withStyles
+} from '@material-ui/core';
 import { ReactHeight } from 'react-height';
+import Cart from './Cart';
 
 const drawerWidth = 270;
 
@@ -32,29 +35,12 @@ const styles = theme => ({
         textAlign: "center",
         backgroundColor: "#F2F2F2",
         marginBottom: 5
-    },
-    cartList: {
-        backgroundColor: "#F2F2F2",
-        marginBottom: 15,
-        marginLeft: 10,
-        marginRight: 10
-    },
-    cartItem: {
-        paddingLeft: 10,
-        paddingTop: 5,
-        paddingBottom: 5
-    },
-    totalPrice: {
-        display: "flex",
-        flexDirection: "row"
     }
 });
 
 class LeftNav extends React.Component {
     render() {
         const { classes } = this.props;
-        const cartItems = this.props.cartItems;
-        const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         return (
             <ReactHeight onHeightReady={() => { }} className={classes.drawer}>
                 <Paper anchor="left">
@@ -99,34 +85,7 @@ class LeftNav extends React.Component {
                             ))
                         }
                     </List>
-                    {
-                        cartItems.length > 0 &&
-                        <div>
-                            <Typography variant="h6" noWrap className={classes.text}>Cart</Typography>
-                            <List>
-                                {
-                                    cartItems.map(i => {
-                                        return (
-                                            <div className={classes.cartList} key={`d-${i.id}-${i.size}-${i.color}`}>
-                                                <Typography variant="subtitle1" className={classes.cartItem}>{i.quantity} <span style={{ color: "deeppink" }}>x</span> <span style={{ color: "grey" }}>{i.name}</span></Typography>
-                                                <Typography variant="subtitle2" className={classes.cartItem} color="textSecondary">Size: {i.size}</Typography>
-                                                <Typography variant="subtitle2" className={classes.cartItem} color="textSecondary">Color: {i.color}</Typography>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </List>
-                            <div style={{ width: 300, marginLeft: "52%" }}>
-                                <div className={classes.totalPrice}>
-                                    <Typography variant="body1" color="textSecondary" noWrap style={{ marginRight: 5 }}>Total Price:</Typography>
-                                    <Typography noWrap style={{ color: "deeppink" }}>${totalPrice.toFixed(2)}</Typography>
-                                </div>
-                            </div>
-                            <div style={{ textAlign: "center", marginTop: 10, marginBottom: 10 }}>
-                                <Button fullWidth variant="contained" color="secondary">View Details</Button>
-                            </div>
-                        </div>
-                    }
+                    <Cart cartItems={this.props.cartItems} removeFromCart={this.props.removeFromCart} />
                 </Paper>
             </ReactHeight>
         )

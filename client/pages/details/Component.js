@@ -1,5 +1,10 @@
 import React from 'react';
-import { withStyles, Typography, Card, CardContent, CardMedia, TextField, List, ListItem, Button, Divider } from '@material-ui/core';
+import {
+    withStyles, Typography, Card, CardContent,
+    CardMedia, TextField, List, ListItem, Button
+} from '@material-ui/core';
+
+import AddToCartButton from '../../components/AddToCartButton';
 
 const styles = theme => ({
     content: {
@@ -41,6 +46,9 @@ const styles = theme => ({
     color: {
         border: 2,
         marginRight: 5
+    },
+    addToCart: {
+        marginTop: 20
     }
 });
 
@@ -104,7 +112,7 @@ class Details extends React.Component {
                                     <span onClick={e => {
                                         e.preventDefault();
                                         this.props.history.push("/");
-                                    }} style={{cursor: "pointer"}}>Home</span> / {p.name}
+                                    }} style={{ cursor: "pointer" }}>Home</span> / {p.name}
                                 </Typography>
                                 <Typography color="textPrimary" variant="h6" style={{ marginTop: 20 }}>
                                     {p.name}
@@ -153,20 +161,9 @@ class Details extends React.Component {
                                         </ListItem>)
                                     }
                                 </List>
-                                <Button color="secondary" variant="contained" style={{ marginTop: 20 }}
-                                    onClick={
-                                        e => {
-                                            e.preventDefault();
-                                            this.props.addToCart({
-                                                id: p.productId,
-                                                name: p.name,
-                                                size: this.state.selectedSize || p.sizes[0].value,
-                                                color: this.state.selectedColor || p.colors[0].value,
-                                                price: p.discountedPrice == 0 ? p.price : p.discountedPrice,
-                                                quantity: this.state.quantity
-                                            });
-                                        }}>Add to cart</Button>
-
+                                <AddToCartButton class={classes.addToCart} product={p} size={this.state.selectedSize || p.sizes[0].value} color={this.state.selectedColor || p.colors[0].value}
+                                    quantity={this.state.quantity} addToCart={this.props.addToCart}
+                                />
                             </div>
                         </div>
 

@@ -4,6 +4,7 @@ import {
     FormControl, Select, MenuItem, Button
 } from '@material-ui/core';
 import axios from 'axios';
+import AddToCartButton from './AddToCartButton';
 
 const styles = theme => ({
     media: {
@@ -178,20 +179,8 @@ class ProductCard extends React.Component {
                                     </Select>
                                 </FormControl>
                             </div>
-                            <Button color="secondary" variant="contained" className={classes.button}
-                                onClick={
-                                    e => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        this.props.addToCart({
-                                            id: p.productId,
-                                            name: p.name,
-                                            size: this.state.selectedSize,
-                                            color: this.state.selectedColor,
-                                            price: p.discountedPrice == 0 ? p.price : p.discountedPrice
-                                        });
-                                    }
-                                }>Add to cart</Button>
+                            <AddToCartButton class={classes.button} product={p} size={this.state.selectedSize} color={this.state.selectedColor}
+                                quantity={1} addToCart={this.props.addToCart} />
                         </form>
                     }
                 </CardContent>

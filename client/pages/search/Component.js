@@ -40,7 +40,8 @@ class Search extends React.Component {
                     searchDepartment={this.props.searchDepartment}
                     searchCategory={this.props.searchCategory}
                     searchProducts={this.props.searchProducts}
-                    cartItems={this.props.cartItems} />
+                    cartItems={this.props.cartItems}
+                    removeFromCart={this.props.removeFromCart} />
                 <main className={classes.content}>
                     <Pagination totalPages={this.props.totalPages} currentPage={this.props.currentPage} onPageChange={this.props.goToPage} />
                     <Grid container spacing={16}>
