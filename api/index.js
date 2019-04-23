@@ -1,10 +1,14 @@
 const Router = require('koa-router');
-const { getProducts, getProductAttributes } = require('../db/products');
+const { getProducts, getProductAttributes, getProduct } = require('../db/products');
 
 const router = new Router({ prefix: "/api" });
 
 router.get('/products/:id/attributes', async (ctx, next) => {
     ctx.body = await getProductAttributes(ctx.params.id);
+});
+
+router.get('/products/:id', async (ctx, next) => {
+    ctx.body = await getProduct(ctx.params.id);
 });
 
 router.get('/products', async (ctx, next) => {

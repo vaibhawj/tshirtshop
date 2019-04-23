@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, IndexRedirect } from 'react-router-dom';
 import SearchPage from './pages/search/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import DetailsPage from './pages/details/Container';
 
 const hoc = (Component) => (props) => {
   return (<Component {...props} />);
@@ -26,10 +26,11 @@ class App extends React.Component {
         <div className="container">
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
-            <img src="images/shop.png"/>
+              <img src="/images/shop.png" />
             </Toolbar>
           </AppBar>
           <Switch>
+            <Route path="/details/:productId" component={hoc(DetailsPage)} />
             <Route component={hoc(SearchPage)} />
           </Switch>
         </div>

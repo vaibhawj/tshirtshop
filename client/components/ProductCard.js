@@ -25,10 +25,6 @@ const styles = theme => ({
         color: "grey",
         textDecorationLine: "line-through"
     },
-    row: {
-        display: "flex",
-        flexDirection: "row"
-    },
     actionContent: {
         zIndex: 999,
         top: "5%",
@@ -135,7 +131,13 @@ class ProductCard extends React.Component {
                         <ItemDescriptionWithStyle product={p} />
                     </CardContent>
                 </CardContent>
-                <CardContent hidden={!this.state.mouseOver} className={classes.actionContent}>
+                <CardContent hidden={!this.state.mouseOver} className={classes.actionContent}
+                    onClick={
+                        e => {
+                            e.preventDefault();
+                            this.props.history.push(`/details/${this.props.product.productId}`);
+                        }
+                    }>
                     <ItemDescriptionWithStyle product={p} />
                     {
                         this.state.sizes && this.state.colors &&
@@ -171,6 +173,7 @@ class ProductCard extends React.Component {
                                 onClick={
                                     e => {
                                         e.preventDefault();
+                                        e.stopPropagation();
                                         this.props.addToCart({
                                             id: p.productId,
                                             name: p.name,

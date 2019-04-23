@@ -5,9 +5,9 @@ export default (state = { items: [] }, action) => {
             const itemToBeAdded = action.payload;
             const indexOfExistingItem = itemsInCart.findIndex(i => i.id == itemToBeAdded.id && i.size == itemToBeAdded.size && i.color == itemToBeAdded.color);
             if (indexOfExistingItem >= 0) {
-                itemsInCart[indexOfExistingItem].quantity = itemsInCart[indexOfExistingItem].quantity + 1;
+                itemsInCart[indexOfExistingItem].quantity = Number.parseInt(itemsInCart[indexOfExistingItem].quantity) + Number.parseInt(itemToBeAdded.quantity ? itemToBeAdded.quantity : 1);
             } else {
-                itemsInCart.push({ ...itemToBeAdded, quantity: 1 });
+                itemsInCart.push({ ...itemToBeAdded, quantity: itemToBeAdded.quantity || 1 });
             }
 
             return {

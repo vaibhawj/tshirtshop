@@ -19,6 +19,12 @@ const styles = theme => ({
 
 class Search extends React.Component {
 
+    componentWillMount() {
+        if (this.props.location != "/") {
+            this.props.history.push("/");
+        }
+    }
+
     componentDidMount() {
         this.props.getProducts();
     }
@@ -42,7 +48,7 @@ class Search extends React.Component {
                             this.props.products.map(p => {
                                 return (
                                     <Grid item key={p.productId}>
-                                        <Card product={p} addToCart={this.props.addToCart} />
+                                        <Card product={p} addToCart={this.props.addToCart} history={this.props.history} />
                                     </Grid>)
                             })
                         }

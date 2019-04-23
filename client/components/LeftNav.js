@@ -123,7 +123,7 @@ class LeftNav extends React.Component {
                                 </div>
                             </div>
                             <div style={{ textAlign: "center", marginTop: 10, marginBottom: 10 }}>
-                                <Button fullWidth variant="contained" color="secondary" >View Details</Button>
+                                <Button fullWidth variant="contained" color="secondary">View Details</Button>
                             </div>
                         </div>
                     }

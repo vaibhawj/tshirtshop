@@ -6,11 +6,13 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import searchPageReducer from './pages/search/reducer';
 import cartReducer from './pages/cart/reducer';
+import detailsPageReducer from './pages/details/reducer';
 
 let store = createStore(
     combineReducers({
         searchPage: searchPageReducer,
-        cart: cartReducer
+        cart: cartReducer,
+        detailsPage: detailsPageReducer
     }),
     applyMiddleware(thunk));
 

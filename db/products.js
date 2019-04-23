@@ -72,13 +72,9 @@ const processProducts = rows => {
             processed[row.product_id] = {
                 productId: row.product_id,
                 name: row.name,
-                description: row.description,
                 price: row.price,
                 discountedPrice: row.discounted_price,
                 image: row.image,
-                image2: row.image_2,
-                thumbnail: row.thumbnail,
-                display: row.display,
                 departments: [
                     {
                         id: row.department_id,
@@ -127,7 +123,57 @@ const processProductAttributes = rows => {
     return attributes;
 }
 
+async function getProduct(productId) {
+    return new Promise((resolve, reject) => {
+        var sql = `select p.*, a.name as attr_name, av.value as attr_value, av.attribute_value_id as attr_value_id from product p
+        inner join product_attribute pa on pa.product_id = p.product_id
+        inner join attribute_value av on av.attribute_value_id = pa.attribute_value_id
+        inner join attribute a on a.attribute_id = av.attribute_id
+        where p.product_id = ${productId};`;
+
+        pool.query(sql, function (error, results, fields) {
+            if (error) throw (error);
+            resolve(processProduct(results));
+        });
+    }).catch(e => console.log(e));
+}
+
+const processProduct = rows => {
+    var product;
+    if (rows && rows.length > 0) {
+        const row = rows[0];
+        product = {
+            productId: row.product_id,
+            name: row.name,
+            description: row.description,
+            price: row.price,
+            discountedPrice: row.discounted_price,
+            image: row.image,
+            image2: row.image_2,
+            thumbnail: row.thumbnail,
+            display: row.display
+        }
+
+        const sizes = [];
+        const colors = [];
+
+        rows.forEach(row => {
+            if (row.attr_name == "Size") {
+                sizes.push({ id: row.attr_value_id, value: row.attr_value });
+            } else if (row.attr_name == "Color") {
+                colors.push({ id: row.attr_value_id, value: row.attr_value })
+            }
+        });
+
+        product.sizes = sizes;
+        product.colors = colors;
+    }
+
+    return product;
+}
+
 module.exports = {
     getProducts,
-    getProductAttributes
+    getProductAttributes,
+    getProduct
 }
