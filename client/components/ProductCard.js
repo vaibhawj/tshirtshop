@@ -150,7 +150,12 @@ class ProductCard extends React.Component {
                                             e.preventDefault();
                                             this.setState({ selectedSize: e.target.value });
                                         }
-                                    }>
+                                    }
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                        }}
+                                    >
                                         {
                                             this.state.sizes.map(s => <MenuItem key={s.id} value={s.value}>{s.value}</MenuItem>)
                                         }
@@ -162,7 +167,11 @@ class ProductCard extends React.Component {
                                             e.preventDefault();
                                             this.setState({ selectedColor: e.target.value });
                                         }
-                                    }>
+                                    }
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                        }}>
                                         {
                                             this.state.colors.map(c => <MenuItem key={c.id} value={c.value}>{c.value}</MenuItem>)
                                         }
