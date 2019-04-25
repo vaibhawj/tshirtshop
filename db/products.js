@@ -7,16 +7,20 @@ async function getProducts(departmentId, categoryId, searchString) {
         left outer join category c on c.category_id = pc.category_id
         left outer join department d on c.department_id = d.department_id `;
 
+        const params = [];
+
         if (departmentId || categoryId || searchString) {
             sql = sql + "where ";
             if (departmentId) {
-                sql = sql + `d.department_id=${departmentId} `;
+                sql = sql + `d.department_id= ? `;
+                params.push(departmentId);
             }
             if (categoryId) {
                 if (departmentId) {
                     sql = sql + "and ";
                 }
-                sql = sql + `c.category_id=${categoryId} `;
+                sql = sql + `c.category_id= ? `;
+                params.push(categoryId);
             }
             if (searchString) {
                 if (departmentId || categoryId) {
@@ -28,7 +32,7 @@ async function getProducts(departmentId, categoryId, searchString) {
             }
         }
         sql = sql + ";";
-        pool.query(sql, function (error, results, fields) {
+        pool.query(sql, params, function (error, results, fields) {
             if (error) throw (error);
             resolve(processProducts(results));
         });
@@ -102,10 +106,10 @@ async function getProductAttributes(productId) {
     return new Promise((resolve, reject) => {
         var sql = `select name, value , av.attribute_value_id as id from product_attribute pa
         inner join attribute_value av on av.attribute_value_id = pa.attribute_value_id
-        inner join attribute a on a.attribute_id = av.attribute_id where product_id=${productId};`;
+        inner join attribute a on a.attribute_id = av.attribute_id where product_id= ?`;
 
-        pool.query(sql, function (error, results, fields) {
-            if (error) throw (error);
+        pool.query(sql, [productId], function (error, results, fields) {
+            if (error) reject(error);
             resolve(processProductAttributes(results));
         });
     }).catch(e => console.log(e));
@@ -129,10 +133,10 @@ async function getProduct(productId) {
         inner join product_attribute pa on pa.product_id = p.product_id
         inner join attribute_value av on av.attribute_value_id = pa.attribute_value_id
         inner join attribute a on a.attribute_id = av.attribute_id
-        where p.product_id = ${productId};`;
+        where p.product_id = ?`;
 
-        pool.query(sql, function (error, results, fields) {
-            if (error) throw (error);
+        pool.query(sql, [productId], function (error, results, fields) {
+            if (error) reject(error);
             resolve(processProduct(results));
         });
     }).catch(e => console.log(e));
