@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     withStyles, Typography, List, Button, Dialog, DialogContent, DialogActions,
-    Table, TableHead, TableBody, TableRow, TableCell, IconButton, Divider
+    Table, TableHead, TableBody, TableRow, TableCell, IconButton, TextField, Divider
 } from '@material-ui/core';
 
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -20,11 +20,16 @@ const styles = theme => ({
     },
     totalPrice: {
         display: "flex",
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: "flex-end"
     },
     smallMedia: {
-        width: 85,
-        height: 85
+        width: 75,
+        height: 75
+    },
+    text: {
+        color: '#989898',
+        marginLeft: 8
     }
 });
 
@@ -123,20 +128,30 @@ class Cart extends React.Component {
                                                     src={`/images/${i.image}`}
                                                     title={i.name}
                                                 />
-                                                {i.name}</TableCell>
-                                            <TableCell>Size:{i.size} Color:{i.color}</TableCell>
-                                            <TableCell>{i.quantity}</TableCell>
-                                            <TableCell>${i.quantity * i.price}</TableCell>
+                                                <Typography color="textSecondary" variant="caption">{i.name}</Typography>
+                                            </TableCell>
+                                            <TableCell><Typography color="textSecondary" variant="caption">Size: {i.size}</Typography><Typography color="textSecondary" variant="caption">Color: {i.color}</Typography></TableCell>
+                                            <TableCell>
+                                                <TextField type="number" inputProps={{ min: "1", step: "1" }} style={{ width: 50 }}
+                                                    defaultValue={i.quantity} onBlur={e => {
+                                                        e.preventDefault();
+                                                        const quantity = e.target.value;
+                                                        this.props.updateQuantity({ ...i, quantity });
+                                                    }} />
+                                            </TableCell>
+                                            <TableCell><Typography color="textSecondary" variant="caption">${(i.quantity * i.price).toFixed(2)}</Typography></TableCell>
                                             <TableCell><DeleteAction removeFromCart={this.props.removeFromCart} item={i} /></TableCell>
                                         </TableRow>)
                                     }
                                 </TableBody>
                             </Table>
                         </DialogContent>
-                        <DialogActions>
+                        <DialogContent>
                             <TotalPrice classes={classes} totalPrice={totalPrice} />
-                            <Divider />
-                            <Button>Add to cart</Button>
+                        </DialogContent>
+                        <Divider />
+                        <DialogActions>
+                            <Button color="secondary" variant="contained">Checkout</Button>
                         </DialogActions>
                     </Dialog>
                 </div>

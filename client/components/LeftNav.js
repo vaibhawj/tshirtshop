@@ -85,7 +85,7 @@ class LeftNav extends React.Component {
                             ))
                         }
                     </List>
-                    <Cart cartItems={this.props.cartItems} removeFromCart={this.props.removeFromCart} />
+                    <Cart cartItems={this.props.cartItems} updateQuantity={this.props.updateQuantity} removeFromCart={this.props.removeFromCart} />
                 </Paper>
             </ReactHeight>
         )

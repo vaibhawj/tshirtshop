@@ -7,7 +7,7 @@ export default (state = { items: [] }, action) => {
             if (indexOfExistingItem >= 0) {
                 itemsInCart[indexOfExistingItem].quantity = Number.parseInt(itemsInCart[indexOfExistingItem].quantity) + Number.parseInt(itemToBeAdded.quantity);
             } else {
-                itemsInCart.push({ ...itemToBeAdded, quantity: itemToBeAdded.quantity});
+                itemsInCart.push({ ...itemToBeAdded, quantity: itemToBeAdded.quantity });
             }
 
             return {
@@ -18,6 +18,17 @@ export default (state = { items: [] }, action) => {
         case "REMOVE_FROM_CART":
             const itemToBeRemoved = action.payload;
             itemsInCart.splice(findIndexOfItem(itemsInCart, itemToBeRemoved), 1);
+            return {
+                ...state,
+                items: itemsInCart
+            }
+
+        case "UPDATE_QTY":
+            const itemToBeUpdated = action.payload;
+            const indexOfItemToBeUpdated = findIndexOfItem(itemsInCart, itemToBeUpdated);
+            if (indexOfItemToBeUpdated >= 0) {
+                itemsInCart[indexOfItemToBeUpdated].quantity = Number.parseInt(itemToBeUpdated.quantity);
+            }
             return {
                 ...state,
                 items: itemsInCart
