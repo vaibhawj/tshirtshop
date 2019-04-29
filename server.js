@@ -25,7 +25,7 @@ app.use(session(app));
 app.use(bodyParser());
 
 // authentication
-require('./auth');
+require('./db/auth');
 
 app.use(passport.initialize());
 app.use(passport.session());
