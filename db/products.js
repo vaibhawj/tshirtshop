@@ -1,42 +1,33 @@
-const pool = require('./connectionUtil');
+const knex = require('./connection');
 
 async function getProducts(departmentId, categoryId, searchString) {
-    return new Promise((resolve, reject) => {
-        var sql = `select p.*, d.department_id, d.name as department_name, c.category_id, c.name as category_name from product p 
-        left outer join product_category pc on p.product_id = pc.product_id 
-        left outer join category c on c.category_id = pc.category_id
-        left outer join department d on c.department_id = d.department_id `;
 
-        const params = [];
+    const queryBuilder = knex
+        .select('p.*', 'd.department_id', 'd.name as department_name', 'c.category_id', 'c.name as category_name')
+        .from('product AS p')
+        .leftOuterJoin("product_category AS pc", "p.product_id", "=", "pc.product_id")
+        .leftOuterJoin("category AS c", "c.category_id", "=", "pc.category_id")
+        .leftOuterJoin("department AS d", "c.department_id ", "=", "d.department_id");
 
-        if (departmentId || categoryId || searchString) {
-            sql = sql + "where ";
-            if (departmentId) {
-                sql = sql + `d.department_id= ? `;
-                params.push(departmentId);
+    if (departmentId) {
+        queryBuilder.where("d.department_id", departmentId);
+    }
+
+    if (categoryId) {
+        queryBuilder.where("c.category_id", categoryId);
+    }
+
+    if (searchString) {
+        queryBuilder.andWhere(
+            function () {
+                this.whereRaw("LOWER(p.name) LIKE ?", [`%${searchString.toLowerCase()}%`])
+                    .orWhereRaw("LOWER(p.description) LIKE ?", [`%${searchString.toLowerCase()}%`])
+                    .orWhereRaw("LOWER(d.description) LIKE ?", [`%${searchString.toLowerCase()}%`])
             }
-            if (categoryId) {
-                if (departmentId) {
-                    sql = sql + "and ";
-                }
-                sql = sql + `c.category_id= ? `;
-                params.push(categoryId);
-            }
-            if (searchString) {
-                if (departmentId || categoryId) {
-                    sql = sql + "and ";
-                }
-                sql = sql + `(LOWER(p.name) like '%${searchString.toLowerCase()}%' 
-                            or LOWER(p.description) like '%${searchString.toLowerCase()}%'
-                            or LOWER(d.description) like '%${searchString.toLowerCase()}%')`;
-            }
-        }
-        sql = sql + ";";
-        pool.query(sql, params, function (error, results, fields) {
-            if (error) throw (error);
-            resolve(processProducts(results));
-        });
-    }).catch(e => console.log(e));
+        )
+    }
+
+    return queryBuilder.then(rows => processProducts(rows));
 }
 
 const processProducts = rows => {
@@ -103,16 +94,12 @@ const processProducts = rows => {
 }
 
 async function getProductAttributes(productId) {
-    return new Promise((resolve, reject) => {
-        var sql = `select name, value , av.attribute_value_id as id from product_attribute pa
-        inner join attribute_value av on av.attribute_value_id = pa.attribute_value_id
-        inner join attribute a on a.attribute_id = av.attribute_id where product_id= ?`;
-
-        pool.query(sql, [productId], function (error, results, fields) {
-            if (error) reject(error);
-            resolve(processProductAttributes(results));
-        });
-    }).catch(e => console.log(e));
+    return knex
+        .select("name", "value", "av.attribute_value_id as id")
+        .from("product_attribute as pa")
+        .innerJoin("attribute_value as av", "pa.attribute_value_id", "=", "av.attribute_value_id")
+        .innerJoin("attribute as a", "av.attribute_id", "=", "a.attribute_id")
+        .where("product_id", productId).then(rows => processProductAttributes(rows));
 }
 
 const processProductAttributes = rows => {
@@ -128,18 +115,15 @@ const processProductAttributes = rows => {
 }
 
 async function getProduct(productId) {
-    return new Promise((resolve, reject) => {
-        var sql = `select p.*, a.name as attr_name, av.value as attr_value, av.attribute_value_id as attr_value_id from product p
-        inner join product_attribute pa on pa.product_id = p.product_id
-        inner join attribute_value av on av.attribute_value_id = pa.attribute_value_id
-        inner join attribute a on a.attribute_id = av.attribute_id
-        where p.product_id = ?`;
 
-        pool.query(sql, [productId], function (error, results, fields) {
-            if (error) reject(error);
-            resolve(processProduct(results));
-        });
-    }).catch(e => console.log(e));
+    return knex
+        .select("p.*", "a.name as attr_name", "av.value as attr_value", "av.attribute_value_id as attr_value_id")
+        .from("product as p")
+        .innerJoin("product_attribute as pa", "pa.product_id", "=", "p.product_id")
+        .innerJoin("attribute_value as av", "av.attribute_value_id", "=", "pa.attribute_value_id")
+        .innerJoin("attribute as a", "a.attribute_id", "=", "av.attribute_id")
+        .where("p.product_id", productId)
+        .then(rows => processProduct(rows));
 }
 
 const processProduct = rows => {

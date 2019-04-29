@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+
 const { getProducts, getProductAttributes, getProduct } = require('../db/products');
 
 const router = new Router({ prefix: "/api" });
