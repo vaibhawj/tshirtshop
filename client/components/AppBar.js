@@ -37,10 +37,11 @@ class AppBar extends React.Component {
         this.state = {
             openSignIn: false,
             activeTab: 0,
+            name: "",
             email: "",
             password: "",
             loggedInUser: false,
-            logInError: false
+            error: false
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -52,23 +53,38 @@ class AppBar extends React.Component {
     handleInputChange(type) {
         return e => {
             e.preventDefault();
-            this.setState({ [`${type}`]: e.target.value, logInError: false })
+            this.setState({ [`${type}`]: e.target.value, error: false })
         }
     }
 
     handleClick(type) {
         return e => {
             e.preventDefault();
-            if (type == "login") {
-                axios.post("/api/auth/login", {
-                    email: this.state.email,
-                    password: this.state.password
-                })
-                    .then(res => {
-                        this.setState({ loggedInUser: res.data, logInError: false });
-                        this.closeDialog();
+            switch (type) {
+                case "login":
+                    axios.post("/api/auth/login", {
+                        email: this.state.email,
+                        password: this.state.password
                     })
-                    .catch(err => this.setState({ logInError: true }))
+                        .then(
+                            res => {
+                                this.setState({ loggedInUser: res.data, error: false });
+                                this.closeDialog();
+                            })
+                        .catch(err => this.setState({ error: true }));
+                    break;
+                case "signup":
+                    axios.post("/api/auth/signup", {
+                        name: this.state.name,
+                        email: this.state.email,
+                        password: this.state.password
+                    }).then(
+                        res => {
+                            this.setState({ loggedInUser: res.data, error: false });
+                            this.closeDialog();
+                        }
+                    ).catch(err => this.setState({ error: true }));
+                    break;
             }
         }
     }
@@ -80,12 +96,12 @@ class AppBar extends React.Component {
     }
 
     closeDialog() {
-        this.setState({ openSignIn: false });
+        this.setState({ openSignIn: false, activeTab: 0 });
         this.clearDialogState();
     }
 
     clearDialogState() {
-        this.setState({ email: "", password: "", logInError: false });
+        this.setState({ name: "", email: "", password: "", error: false });
     }
 
     render() {
@@ -96,7 +112,7 @@ class AppBar extends React.Component {
                     <img src="/images/shop.png" />
                     {
                         this.state.loggedInUser &&
-                        <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div style={{ display: "flex", flexDirection: "row", flexFlow: "vertical-center" }}>
                             <Typography color="inherit" variant="subtitle2" fontFamily="Monospace">{this.state.loggedInUser}</Typography>
                             <Button color="secondary" size="small" onClick={e => {
                                 e.preventDefault();
@@ -127,7 +143,7 @@ class AppBar extends React.Component {
                             {
                                 this.state.activeTab == 0 &&
                                 <div className={classes.tabContent}>
-                                    {this.state.logInError && <Typography color="secondary" variant="caption">Login failed. Please try again</Typography>}
+                                    {this.state.error && <Typography color="secondary" variant="caption">Login failed. Please try again</Typography>}
                                     <TextField placeholder="Email" margin="normal" onChange={this.handleInputChange("email")} value={this.state.email} />
                                     <TextField placeholder="Password" type="password" margin="normal" onChange={this.handleInputChange("password")} value={this.state.password} />
                                     <Button className={classes.button} color="secondary" variant="contained" margin="normal" onClick={this.handleClick("login")}>Login</Button>
@@ -136,6 +152,8 @@ class AppBar extends React.Component {
                             {
                                 this.state.activeTab == 1 &&
                                 <div className={classes.tabContent}>
+                                    {this.state.error && <Typography color="secondary" variant="caption">Signup failed. Please try again</Typography>}
+                                    <TextField placeholder="Name" margin="normal" onChange={this.handleInputChange("name")} value={this.state.name}></TextField>
                                     <TextField placeholder="Email" margin="normal" onChange={this.handleInputChange("email")} value={this.state.email}></TextField>
                                     <TextField placeholder="Password" type="password" margin="normal" onChange={this.handleInputChange("password")} value={this.state.password} ></TextField>
                                     <Button className={classes.button} color="secondary" variant="contained" margin="normal" onClick={this.handleClick("signup")}>Sign up</Button>
